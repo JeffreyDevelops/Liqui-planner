@@ -33,38 +33,54 @@ const haushaltsbuch = {
         });
     },
 
-    // eintrag_mit_gesamtbilanz_verechnen() {
-    //     switch(this.neuer_eintrag.typ) {
-    //         case "Einnahme":
-    //             this.gesamtbilanz.einnahmen += this.neuer_eintrag.betrag;
-    //             this.gesamtbilanz.bilanz += this.neuer_eintrag.betrag;
-    //             break;
-    //         case "Ausgabe":
-    //             this.gesamtbilanz.ausgaben += this.neuer_eintrag.betrag;
-    //             this.gesamtbilanz.bilanz -= this.neuer_eintrag.betrag;
-    //             break;
-    //         default: 
-    //         console.log(`Der Typ "${this.neuer_eintrag.typ}" ist nicht bekannt!`);
-    //             break;
-    //     }
-    // },
-    // gesamtbilanz_ausgeben() {
-    // console.log(`Einnahmen: ${this.gesamtbilanz.einnahmen} ct
-    // Ausgaben: ${this.gesamtbilanz.ausgaben} ct
-    // Bilanz: ${this.gesamtbilanz.bilanz} ct
-    // Bilanz ist positiv ${this.gesamtbilanz.bilanz >= 0}`);    
-    // },
+    gesamtbilanz_erstellen() {
+        let neue_gesamtbilanz = {
+            einnahmen:  0,
+            ausgaben:  0,
+            bilanz: 0
+        };
+        this.eintraege.forEach(function(eintrag) {
+            switch(eintrag.typ) {
+                case "Einnahme":
+                    neue_gesamtbilanz.einnahmen += eintrag.betrag;
+                    neue_gesamtbilanz.bilanz += eintrag.betrag;
+                    break;
+                case "Ausgabe":
+                    neue_gesamtbilanz.ausgaben += eintrag.betrag;
+                    neue_gesamtbilanz.bilanz -= eintrag.betrag;
+                    break;
+                default: 
+                console.log(`Der Typ "${eintrag.typ}" ist nicht bekannt!`);
+                    break;
+            }
+        });
+        this.gesamtbilanz = neue_gesamtbilanz;
+        
+    },
+
+
+    gesamtbilanz_ausgeben() {
+    console.log(`Einnahmen: ${this.gesamtbilanz.einnahmen} ct\n`
+        + `Ausgaben: ${this.gesamtbilanz.ausgaben} ct\n`
+        + `Bilanz: ${this.gesamtbilanz.bilanz} ct\n`
+        + `Bilanz ist positiv ${this.gesamtbilanz.bilanz >= 0}`);    
+    },
+
+
     eintrag_hinzufuegen() {
+        let weiterer_eintrag = true;
+        while(weiterer_eintrag) {
         this.eintrag_erfassen();
         this.eintraege_ausgeben();
-        // this.eintrag_mit_gesamtbilanz_verechnen();
-        // this.gesamtbilanz_ausgeben();
+        this.gesamtbilanz_erstellen();
+        this.gesamtbilanz_ausgeben();
+        weiterer_eintrag = confirm("Weiteren Eintrag hinzufügen?");
+        }
     }
     
 };
 
 
-haushaltsbuch.eintrag_hinzufuegen();
-haushaltsbuch.eintrag_hinzufuegen();
-haushaltsbuch.eintrag_hinzufuegen();
-console.log(haushaltsbuch);
+    haushaltsbuch.eintrag_hinzufuegen();
+    console.log(haushaltsbuch);
+
