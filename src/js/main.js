@@ -113,20 +113,50 @@ const haushaltsbuch = {
             }
         });
     },
-    
-    eintraege_ausgeben() {
-        console.clear();
-        this.eintraege.forEach(function(eintrag) {
-            console.log(`Titel: ${eintrag.get("titel")}\n`
-            + `Typ: ${eintrag.get("typ")}\n`
-            + `Betrag: ${(eintrag.get("betrag") / 100).toFixed(2)} €\n`
-            + `Datum: ${eintrag.get("datum").toLocaleDateString("de-DE", {
-                year: "numeric",
-                month: "2-digit",
-                day: "2-digit"
-            })}`
-            );
+    // wird durch HTML-Ausgabe ersetzt 
+    // eintraege_ausgeben() {
+    //     console.clear();
+    //     this.eintraege.forEach(function(eintrag) {
+    //         console.log(`Titel: ${eintrag.get("titel")}\n`
+    //         + `Typ: ${eintrag.get("typ")}\n`
+    //         + `Betrag: ${(eintrag.get("betrag") / 100).toFixed(2)} €\n`
+    //         + `Datum: ${eintrag.get("datum").toLocaleDateString("de-DE", {
+    //             year: "numeric",
+    //             month: "2-digit",
+    //             day: "2-digit"
+    //         })}`
+    //         );
+    //     });
+    // },
+
+//     <ul>
+//     <li class="ausgabe">
+//         <span class="datum">03.02.2020</span>
+//         <span class="titel">Miete</span>
+//         <span class="betrag">545,00 €</span>
+//         <button class="entfernen-button"><i class="fas fa-trash"></i></button>
+//     </li>
+//     <li class="einnahme">
+//         <span class="datum">01.02.2020</span>
+//         <span class="titel">Gehalt</span>
+//         <span class="betrag">2064,37 €</span>
+//         <button class="entfernen-button"><i class="fas fa-trash"></i></button>
+//     </li>
+// </ul>
+
+    // html_eintrag_generieren(eintrag)
+
+    eintraege_anzeigen() {
+        
+        document.querySelectorAll(".monatsliste ul").forEach(function(eintragsliste) {
+            eintragsliste.remove();
         });
+     
+        let eintragsliste = document.createElement("ul");
+        for (let eintrag of this.eintraege) {
+            eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag));
+        }
+        document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
     },
 
     gesamtbilanz_erstellen() {
@@ -153,13 +183,17 @@ const haushaltsbuch = {
         
     },
 
+    // wird durch HTML-Ausgabe ersetzt
+    // gesamtbilanz_ausgeben() {
+    // console.log(`Einnahmen: ${(this.gesamtbilanz.get("einnahmen") / 100).toFixed(2)} €\n`
+    //     + `Ausgaben: ${(this.gesamtbilanz.get("ausgaben") / 100).toFixed(2)} €\n`
+    //     + `Bilanz: ${(this.gesamtbilanz.get("bilanz") / 100).toFixed(2)} €\n`
+    //     + `Bilanz ist positiv ${this.gesamtbilanz.get("bilanz") / 100 >= 0}`);    
+    // },
 
-    gesamtbilanz_ausgeben() {
-    console.log(`Einnahmen: ${(this.gesamtbilanz.get("einnahmen") / 100).toFixed(2)} €\n`
-        + `Ausgaben: ${(this.gesamtbilanz.get("ausgaben") / 100).toFixed(2)} €\n`
-        + `Bilanz: ${(this.gesamtbilanz.get("bilanz") / 100).toFixed(2)} €\n`
-        + `Bilanz ist positiv ${this.gesamtbilanz.get("bilanz") / 100 >= 0}`);    
-    },
+    // html_gesamtbilanz_generieren
+
+    // gesamtbilanz_anzeigen()
 
 
     eintrag_hinzufuegen() {
@@ -167,8 +201,9 @@ const haushaltsbuch = {
         while(weiterer_eintrag) {
         this.eintrag_erfassen();
         if (this.fehler.length === 0) {
+            // Methodenaufrufe anpassen
             this.eintraege_sortieren();
-            this.eintraege_ausgeben();
+            this.eintraege_anzeigen();
             this.gesamtbilanz_erstellen();
             this.gesamtbilanz_ausgeben();
         } else {
