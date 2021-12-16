@@ -230,21 +230,36 @@ const haushaltsbuch = {
     //     + `Bilanz ist positiv ${this.gesamtbilanz.get("bilanz") / 100 >= 0}`);    
     // },
 
+
+    //     <aside id="gesamtbilanz">
+    //     <h1>Gesamtbilanz</h1>
+    //     <div class="gesamtbilanz-zeile einnahmen"><span>Einnahmen:</span><span>0,00 €</span></div>
+    //     <div class="gesamtbilanz-zeile ausgaben"><span>Ausgaben:</span><span>0,00 €</span></div>
+    //     <div class="gesamtbilanz-zeile bilanz"><span>Bilanz:</span><span class="positiv">0,00 €</span></div>
+    // </aside>
+
+
     // html_gesamtbilanz_generieren
+        // anhand der aktuellen Gesamtbilanz die Gesamtbilanz neu generieren
 
-    // gesamtbilanz_anzeigen()
+    gesamtbilanz_anzeigen() {
 
+        document.querySelectorAll("#gesamtbilanz").forEach(function(gesamtbilanz) {
+            gesamtbilanz.remove();
+        });
+        document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
+
+    },
 
     eintrag_hinzufuegen() {
         let weiterer_eintrag = true;
         while(weiterer_eintrag) {
         this.eintrag_erfassen();
         if (this.fehler.length === 0) {
-            // Methodenaufrufe anpassen
             this.eintraege_sortieren();
             this.eintraege_anzeigen();
             this.gesamtbilanz_erstellen();
-            // this.gesamtbilanz_ausgeben();
+            this.gesamtbilanz_anzeigen();
         } else {
             this.fehler = [];
         }
