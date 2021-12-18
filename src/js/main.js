@@ -17,9 +17,8 @@ const haushaltsbuch = {
              this.eintraege.push(neuer_eintrag);   
         } else {
             console.log("Folgende Fehler wurden gefunden:")
-            this.fehler.forEach(function(fehler) {
-                console.log(fehler);
-            });
+            this.fehler.forEach(fehler => console.log(fehler)
+            );
         }
    
     },
@@ -103,7 +102,7 @@ const haushaltsbuch = {
     },
 
     eintraege_sortieren() {
-        this.eintraege.sort(function(eintrag_a, eintrag_b) {
+        this.eintraege.sort((eintrag_a, eintrag_b) => {
             if(eintrag_a.get("datum") > eintrag_b.get("datum")) {
                 return -1;
             } else if(eintrag_a.get("datum")  < eintrag_b.get("datum")) {
@@ -157,14 +156,14 @@ const haushaltsbuch = {
 
     eintraege_anzeigen() {
         
-        document.querySelectorAll(".monatsliste ul").forEach(function(eintragsliste) {
-            eintragsliste.remove();
-        });
+        document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => 
+        eintragsliste.remove()
+        );
      
         let eintragsliste = document.createElement("ul");
-        for (let eintrag of this.eintraege) {
-            eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag));
-        }
+        this.eintraege.forEach(eintrag => 
+            eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag))
+        );
         document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
     },
 
@@ -173,7 +172,7 @@ const haushaltsbuch = {
         neue_gesamtbilanz.set("einnahmen", 0);
         neue_gesamtbilanz.set("ausgaben", 0);     
         neue_gesamtbilanz.set("bilanz", 0);
-        this.eintraege.forEach(function(eintrag) {
+        this.eintraege.forEach(eintrag => {
             switch(eintrag.get("typ")) {
                 case "einnahme":
                     neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.get("betrag"));
@@ -191,17 +190,6 @@ const haushaltsbuch = {
         this.gesamtbilanz = neue_gesamtbilanz;
         
     },
-
-    //     <aside id="gesamtbilanz">
-    //     <h1>Gesamtbilanz</h1>
-    //     <div class="gesamtbilanz-zeile einnahmen"><span>Einnahmen:</span><span>0,00 €</span></div>
-    //     <div class="gesamtbilanz-zeile ausgaben"><span>Ausgaben:</span><span>0,00 €</span></div>
-    //     <div class="gesamtbilanz-zeile bilanz"><span>Bilanz:</span><span class="positiv">0,00 €</span></div>
-    // </aside>
-
-
-    // html_gesamtbilanz_generieren
-        // anhand der aktuellen Gesamtbilanz die Gesamtbilanz neu generieren
 
     html_gesamtbilanz_generieren() {
 
@@ -254,9 +242,9 @@ const haushaltsbuch = {
 
     gesamtbilanz_anzeigen() {
 
-        document.querySelectorAll("#gesamtbilanz").forEach(function(gesamtbilanz) {
-            gesamtbilanz.remove();
-        });
+        document.querySelectorAll("#gesamtbilanz").forEach(gesamtbilanz => 
+            gesamtbilanz.remove()
+        );
         document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
 
     },
