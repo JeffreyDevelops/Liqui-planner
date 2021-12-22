@@ -2,10 +2,31 @@
 
 const eingabeformular = {
 
+    formulardaten_holen(e) {
+
+        let typ;
+
+        if (e.target.elements.ausgabe.checked === true) {
+            typ = "ausgabe";
+        } else if (e.target.elements.einnahme.checked === true) {
+            typ = "einnahme";
+        }
+
+        return {
+            titel: e.target.elements.titel.value,
+            betrag: e.target.elements.betrag.value,
+            typ: typ,
+            datum: e.target.elements.datum.valueAsDate
+        }
+    },
+
     absenden_event_hinzufuegen(eingabeformular) {
         eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
             e.preventDefault();
             // Formulardaten holen
+            console.log(e);
+            let formulardaten = this.formulardaten_holen(e);
+            console.log(formulardaten);
             // Formulardaten verarbeiten
             // Formulardaten validieren
             // wenn die Formulardaten valide sind
