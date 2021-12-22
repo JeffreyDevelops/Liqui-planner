@@ -54,20 +54,35 @@ const eingabeformular = {
             console.log(e);
             let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
             console.log(formulardaten);
+            // Formulardaten validieren
             let formular_fehler = this.formulardaten_validieren(formulardaten);
             console.log(formular_fehler);
-            // Formulardaten validieren
-            // wenn die Formulardaten valide sind
+
+            if (formular_fehler.length === 0) {
+                haushaltsbuch.eintrag_hinzufuegen(formulardaten);
                 // Eintrag zum Haushaltsbuch hinzufügen
                    // wenn bereits Fehlermeldung angezeigt wird
                     // Fehldermeldung entfernen
                 // Formular zurücksetzen
+                e.target.reset();
                 // Datum auf das heutigen Tag setzen
-            // wenn die Formulardaten NICHT valide sind
-                // wenn bereits Fehlermeldung angezeigt wird
+                this.datum_aktualisieren();
+            } else {
+             // wenn bereits Fehlermeldung angezeigt wird
                     // Fehldermeldung entfernen
                 // Fehlermeldung im Eingabeformular-Container anzeigen
+
+            }
+
         });
+    },
+
+    datum_aktualisieren() {
+        let datums_input = document.querySelector("#datum");
+        if(datums_input !== null) {
+            datums_input.valueAsDate = new Date();
+        }
+        
     },
 
     html_generieren() {
@@ -84,7 +99,7 @@ const eingabeformular = {
                 <input type="text" id="titel" form="eingabeformular" name="titel" placeholder="z.B. Einkaufen" size="10" title="Titel des Eintrags">
                 <input type="radio" id="einnahme" name="typ" value="einnahme" form="eingabeformular" title="Typ des Eintrags">
                 <label for="einnahme" title="Typ des Eintrags">Einnahme</label>
-                <input type="radio" id="ausgabe" name="typ" value="ausgabe" form="eingabeformular" title="Typ des Eintrags">
+                <input type="radio" id="ausgabe" name="typ" value="ausgabe" form="eingabeformular" title="Typ des Eintrags" checked>
                 <label for="ausgabe" title="Typ des Eintrags">Ausgabe</label>
             </div>
         </div>
@@ -108,6 +123,7 @@ const eingabeformular = {
     anzeigen() {
         document.querySelector("#navigationsleiste").insertAdjacentElement("afterend", this.html_generieren());
         // Datum auf das heutigen Tag setzen
+        this.datum_aktualisieren();
     }
 
 };
