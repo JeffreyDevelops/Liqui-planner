@@ -19,6 +19,23 @@ const haushaltsbuch = {
         this.gesamtbilanz_anzeigen();
     },
 
+    eintrag_entfernen(timestamp) {
+
+        let start_index;
+        for (let i = 0; i < this.eintraege.length; i++) {
+            if (this.eintraege[i].get("timestamp") === parseInt(timestamp)) {
+                console.log(this.eintraege[i].get("timestamp"));
+                start_index = i;
+                break;
+            }
+        }
+
+        this.eintraege.splice(start_index, 1);
+        this.eintraege_anzeigen();
+        this.gesamtbilanz_erstellen();
+        this.gesamtbilanz_anzeigen();
+
+    },
 
     eintraege_sortieren() {
         this.eintraege.sort((eintrag_a, eintrag_b) => {
@@ -70,7 +87,18 @@ const haushaltsbuch = {
         icon.setAttribute("class", "fas fa-trash");
         button.insertAdjacentElement("afterbegin", icon);
 
+        this.eintrag_entfernen_event_hinzufuegen(listenpunkt);
+
         return listenpunkt;
+    },
+
+    eintrag_entfernen_event_hinzufuegen(listenpunkt) {
+        listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
+            let timestamp = e.target.parentElement.getAttribute("data-timestamp");
+            console.log(timestamp);
+            this.eintrag_entfernen(timestamp);
+        });
+        
     },
 
     eintraege_anzeigen() {
