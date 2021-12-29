@@ -39,19 +39,13 @@ const haushaltsbuch = {
     eintraege_sortieren() {
         this.eintraege.sort((eintrag_a, eintrag_b) => {
             return eintrag_a.get("datum") > eintrag_b.get("datum") ? -1 : eintrag_a.get("datum") < eintrag_b.get("datum") ? 1 : 0;
-            
         });
     },
 
     html_eintrag_generieren(eintrag) {
 
-
         let listenpunkt = document.createElement("li");
-        if (eintrag.get("typ") === "einnahme") {
-            listenpunkt.setAttribute("class", "einnahme");
-        } else if (eintrag.get("typ") === "ausgabe") {
-            listenpunkt.setAttribute("class", "ausgabe");
-        }
+        eintrag.get("typ") === "einnahme" ? listenpunkt.setAttribute("class", "einnahme") : listenpunkt.setAttribute("class", "ausgabe");
         listenpunkt.setAttribute("data-timestamp", eintrag.get("timestamp"));
 
         let datum = document.createElement("span");
