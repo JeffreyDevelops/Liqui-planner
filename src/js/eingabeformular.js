@@ -40,6 +40,14 @@ const eingabeformular = {
 
     },
 
+    datum_aktualisieren() {
+        let datums_input = document.querySelector("#datum");
+        if(datums_input !== null) {
+            datums_input.valueAsDate = new Date();
+        }
+        
+    },
+
     absenden_event_hinzufuegen(eingabeformular) {
         eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
             e.preventDefault();
@@ -58,14 +66,6 @@ const eingabeformular = {
             }
 
         });
-    },
-
-    datum_aktualisieren() {
-        let datums_input = document.querySelector("#datum");
-        if(datums_input !== null) {
-            datums_input.valueAsDate = new Date();
-        }
-        
     },
 
     html_fehlerbox_generieren(formular_fehler) {
@@ -141,8 +141,12 @@ const eingabeformular = {
     },
 
     anzeigen() {
-        document.querySelector("#navigationsleiste").insertAdjacentElement("afterend", this.html_generieren());
-        this.datum_aktualisieren();
+        let navigationsleiste = document.querySelectorAll("#navigationsleiste");
+        if (navigationsleiste !== null) {
+            navigationsleiste.insertAdjacentElement("afterend", this.html_generieren());
+            this.datum_aktualisieren();
+        }
+        
     }
 
 };
