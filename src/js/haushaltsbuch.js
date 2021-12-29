@@ -2,7 +2,6 @@
 
 const haushaltsbuch = {
     gesamtbilanz: new Map(),
-
     eintraege: [],
 
     eintrag_hinzufuegen(formulardaten) {
@@ -39,13 +38,8 @@ const haushaltsbuch = {
 
     eintraege_sortieren() {
         this.eintraege.sort((eintrag_a, eintrag_b) => {
-            if(eintrag_a.get("datum") > eintrag_b.get("datum")) {
-                return -1;
-            } else if(eintrag_a.get("datum")  < eintrag_b.get("datum")) {
-                return 1;
-            } else {
-                return 0;
-            }
+            return eintrag_a.get("datum") > eintrag_b.get("datum") ? -1 : eintrag_a.get("datum") < eintrag_b.get("datum") ? 1 : 0;
+            
         });
     },
 
