@@ -83,7 +83,6 @@ const haushaltsbuch = {
     eintrag_entfernen_event_hinzufuegen(listenpunkt) {
         listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
             let timestamp = e.target.parentElement.getAttribute("data-timestamp");
-            console.log(timestamp);
             this.eintrag_entfernen(timestamp);
         });
         
@@ -91,14 +90,9 @@ const haushaltsbuch = {
 
     eintraege_anzeigen() {
         
-        document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => 
-        eintragsliste.remove()
-        );
-     
+        document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => eintragsliste.remove());
         let eintragsliste = document.createElement("ul");
-        this.eintraege.forEach(eintrag => 
-            eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag))
-        );
+        this.eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag)));
         document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
     },
 
@@ -161,11 +155,7 @@ const haushaltsbuch = {
         bilanz_titel.textContent = "Bilanz:";
         bilanz_zeile.insertAdjacentElement("afterbegin", bilanz_titel);
         let bilanz_betrag = document.createElement("span");
-        if (this.gesamtbilanz.get("bilanz") >= 0) {
-            bilanz_betrag.setAttribute("class", "positiv");
-        } else if (this.gesamtbilanz.get("bilanz") < 0) {
-            bilanz_betrag.setAttribute("class", "negativ");
-        }
+        this.gesamtbilanz.get("bilanz") >= 0 ? bilanz_betrag.setAttribute("class", "positiv") : bilanz_betrag.setAttribute("class", "negativ");
         bilanz_betrag.textContent = `${(this.gesamtbilanz.get("bilanz") / 100).toFixed(2).replace(/\./, ",")} €`;
         bilanz_zeile.insertAdjacentElement("beforeend", bilanz_betrag);
         gesamtbilanz.insertAdjacentElement("beforeend", bilanz_zeile);
@@ -177,9 +167,7 @@ const haushaltsbuch = {
 
     gesamtbilanz_anzeigen() {
 
-        document.querySelectorAll("#gesamtbilanz").forEach(gesamtbilanz => 
-            gesamtbilanz.remove()
-        );
+        document.querySelectorAll("#gesamtbilanz").forEach(gesamtbilanz => gesamtbilanz.remove());
         document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
 
     },

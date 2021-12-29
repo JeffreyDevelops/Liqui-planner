@@ -7,7 +7,6 @@ const eingabeformular = {
             titel: e.target.elements.titel.value,
             betrag: e.target.elements.betrag.value,
             einnahme: e.target.elements.einnahme.checked,
-            ausgabe: e.target.elements.ausgabe.checked,
             datum: e.target.elements.datum.valueAsDate
         }
     },
@@ -15,7 +14,7 @@ const eingabeformular = {
     formulardaten_verarbeiten(formulardaten) {
         return {
             titel: formulardaten.titel.trim(),
-            typ: formulardaten.einnahme === true ? "einnahme" : formulardaten.ausgabe === true ? "ausgabe" : null,
+            typ: formulardaten.einnahme === false ? "ausgabe" : "einnahme",
             betrag: parseFloat(formulardaten.betrag) * 100,
             datum: formulardaten.datum
         }
@@ -26,9 +25,6 @@ const eingabeformular = {
         let fehler = [];
         if (formulardaten.titel === "") {
             fehler.push("Titel");
-        }
-        if(formulardaten.typ === undefined || formulardaten.typ.match(/^(?:einnahme|ausgabe)$/) == null) {
-            fehler.push("Typ");
         }
         if(isNaN(formulardaten.betrag)) {
             fehler.push("Betrag");
@@ -141,7 +137,7 @@ const eingabeformular = {
     },
 
     anzeigen() {
-        let navigationsleiste = document.querySelectorAll("#navigationsleiste");
+        let navigationsleiste = document.querySelector("#navigationsleiste");
         if (navigationsleiste !== null) {
             navigationsleiste.insertAdjacentElement("afterend", this.html_generieren());
             this.datum_aktualisieren();
