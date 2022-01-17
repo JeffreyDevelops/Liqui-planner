@@ -36,6 +36,22 @@ class Monatslistensammlung {
         this._monatslisten.push(neue_monatsliste);
     }
      
+    _monatslisten_sortieren() {
+        this._monatslisten.sort((monatliste_a, monatsliste_b) => {
+            if (monatliste_a.jahr() < monatsliste_b.jahr()) {
+                return 1;
+            } else if (monatliste_a.jahr() > monatsliste_b.jahr()) {
+                return -1;
+            } else {
+                if (monatliste_a.monat() < monatsliste_b.monat()) {
+                    return 1;
+                } else {
+                    return -1;
+                } 
+            }
+        });
+    }
+
 
     _html_generieren() {
 
@@ -50,6 +66,7 @@ class Monatslistensammlung {
     }
 
     _aktualisieren() {
+        this._monatslisten_sortieren();
         this._html = this._html_generieren();
         this.anzeigen();
     }
