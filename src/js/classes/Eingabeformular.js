@@ -71,7 +71,6 @@ class Eingabeformular {
     }
 
     _html_generieren() {
-        
         let eingabeformular = document.createElement("section");
         eingabeformular.setAttribute("id", "eingabeformular-container");
         eingabeformular.innerHTML = `<form id="eingabeformular" action="#" method="get"></form>

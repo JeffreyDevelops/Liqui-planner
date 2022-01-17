@@ -1,8 +1,3 @@
-/* 
-    <section id="monatslisten">
-
-</section> */
-
 "use strict";
 
 class Monatslistensammlung {
@@ -53,7 +48,6 @@ class Monatslistensammlung {
 
 
     _html_generieren() {
-
         let monatslisten = document.createElement("section");
         monatslisten.setAttribute("id", "monatslisten");
 

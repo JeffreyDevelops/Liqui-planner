@@ -4,8 +4,11 @@ class Haushaltsbuch {
 
     constructor() {
         this._eintraege = [];
+        this._navigationsleiste = new Navigationsleiste();
+        this._eingabeformular = new Eingabeformular();
         this._monatslistensammlung = new Monatslistensammlung();
         this._gesamtbilanz = new Gesamtbilanz();
+        (console.log(this));
     }
 
     eintrag_hinzufuegen(formulardaten) {
@@ -21,7 +24,6 @@ class Haushaltsbuch {
     }
 
     eintrag_entfernen(timestamp) {
-
         let start_index;
         for (let i = 0; i < this._eintraege.length; i++) {
             if (this._eintraege[i].timestamp() === parseInt(timestamp)) {
@@ -35,7 +37,9 @@ class Haushaltsbuch {
         this._gesamtbilanz.aktualisieren(this._eintraege);
     }
 
-    anzeigen() {
+    start() {
+        this._eingabeformular.anzeigen();
+        this._navigationsleiste.anzeigen();
         this._monatslistensammlung.anzeigen();
         this._gesamtbilanz.anzeigen();
     }
