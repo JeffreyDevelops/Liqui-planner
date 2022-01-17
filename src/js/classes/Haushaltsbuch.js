@@ -9,24 +9,25 @@ class Haushaltsbuch {
     }
 
     eintrag_hinzufuegen(formulardaten) {
-        let neuer_eintrag = new Map();
-        neuer_eintrag.set("titel", formulardaten.titel);
-        neuer_eintrag.set("betrag", formulardaten.betrag);
-        neuer_eintrag.set("typ", formulardaten.typ);
-        neuer_eintrag.set("datum", formulardaten.datum);
-        neuer_eintrag.set("timestamp", Date.now());
+        let neuer_eintrag = new Eintrag(
+            formulardaten.titel, 
+            formulardaten.betrag, 
+            formulardaten.typ, 
+            formulardaten.datum
+            );
         this._eintraege.push(neuer_eintrag);
+        console.log(this);
         this._eintraege_sortieren();
         this._eintraege_anzeigen();
         this._gesamtbilanz_erstellen();
         this._gesamtbilanz_anzeigen();
     }
 
-    _eintrag_entfernen(timestamp) {
+    eintrag_entfernen(timestamp) {
 
         let start_index;
         for (let i = 0; i < this._eintraege.length; i++) {
-            if (this._eintraege[i].get("timestamp") === parseInt(timestamp)) {
+            if (this._eintraege[i].timestamp() === parseInt(timestamp)) {
                 start_index = i;
                 break;
             }
@@ -41,61 +42,16 @@ class Haushaltsbuch {
 
     _eintraege_sortieren() {
         this._eintraege.sort((eintrag_a, eintrag_b) => {
-            return eintrag_a.get("datum") > eintrag_b.get("datum") ? -1 : eintrag_a.get("datum") < eintrag_b.get("datum") ? 1 : 0;
+            return eintrag_a.datum() > eintrag_b.datum() ? -1 : eintrag_a.datum() < eintrag_b.datum() ? 1 : 0;
         });
     }
 
-    _html_eintrag_generieren(eintrag) {
-
-        let listenpunkt = document.createElement("li");
-        eintrag.get("typ") === "einnahme" ? listenpunkt.setAttribute("class", "einnahme") : listenpunkt.setAttribute("class", "ausgabe");
-        listenpunkt.setAttribute("data-timestamp", eintrag.get("timestamp"));
-
-        let datum = document.createElement("span");
-        datum.setAttribute("class", "datum");
-        datum.textContent = eintrag.get("datum").toLocaleDateString("de-DE", {
-            year: "numeric",
-            month: "2-digit",
-            day: "2-digit"
-        });
-        listenpunkt.insertAdjacentElement("afterbegin", datum);
-
-        let titel = document.createElement("span");
-        titel.setAttribute("class", "titel");
-        titel.textContent = eintrag.get("titel");
-        datum.insertAdjacentElement("afterend", titel);
-
-        let betrag = document.createElement("span");
-        betrag.setAttribute("class", "betrag");
-        betrag.textContent = `${(eintrag.get("betrag") / 100).toFixed(2).replace(/\./, ",")} €`;
-        titel.insertAdjacentElement("afterend", betrag);
-
-        let button = document.createElement("button");
-        button.setAttribute("class", "entfernen-button");
-        betrag.insertAdjacentElement("afterend", button);
-
-        let icon = document.createElement("i");
-        icon.setAttribute("class", "fas fa-trash");
-        button.insertAdjacentElement("afterbegin", icon);
-
-        this._eintrag_entfernen_event_hinzufuegen(listenpunkt);
-
-        return listenpunkt;
-    }
-
-    _eintrag_entfernen_event_hinzufuegen(listenpunkt) {
-        listenpunkt.querySelector(".entfernen-button").addEventListener("click", e => {
-            let timestamp = e.target.parentElement.getAttribute("data-timestamp");
-            this._eintrag_entfernen(timestamp);
-        });
-        
-    }
 
     _eintraege_anzeigen() {
         
         document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => eintragsliste.remove());
         let eintragsliste = document.createElement("ul");
-        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", this._html_eintrag_generieren(eintrag)));
+        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html()));
         document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
     }
 
@@ -105,17 +61,17 @@ class Haushaltsbuch {
         neue_gesamtbilanz.set("ausgaben", 0);     
         neue_gesamtbilanz.set("bilanz", 0);
         this._eintraege.forEach(eintrag => {
-            switch(eintrag.get("typ")) {
+            switch(eintrag.typ()) {
                 case "einnahme":
-                    neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.get("betrag"));
-                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.get("betrag"));
+                    neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.betrag());
+                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.betrag());
                     break;
                 case "ausgabe":
-                    neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.get("betrag"));
-                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.get("betrag"));
+                    neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.betrag());
+                    neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.betrag());
                     break;
                 default: 
-                console.log(`Der Typ "${eintrag.get("typ")}" ist nicht bekannt!`);
+                console.log(`Der Typ "${eintrag.typ()}" ist nicht bekannt!`);
                     break;
             }
         });
