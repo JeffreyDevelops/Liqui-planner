@@ -14,7 +14,7 @@ class Monatslistensammlung {
 
     eintrag_hinzufuegen(eintrag) {
         let eintragsmonat = eintrag.datum().toLocaleString("de-DE", {month: "numeric"});
-        let eintragsjahr = eintrag.datum().toLocaleString("de-DE", {year: "nummeric"});
+        let eintragsjahr = eintrag.datum().toLocaleString("de-DE", {year: "numeric"});
         let monatsliste_vorhanden = false;
         this._monatslisten.forEach(monatliste => {
             if (eintragsmonat === monatliste.monat() && eintragsjahr === monatliste.jahr()) {
@@ -26,6 +26,7 @@ class Monatslistensammlung {
         if (!monatsliste_vorhanden) {
             this._monatsliste_hinzufuegen(eintragsjahr, eintragsmonat, eintrag);
         }
+        this._aktualisieren();
 
     }  
 
@@ -46,6 +47,11 @@ class Monatslistensammlung {
         });
 
         return monatslisten;
+    }
+
+    _aktualisieren() {
+        this._html = this._html_generieren();
+        this.anzeigen();
     }
 
     anzeigen() {
