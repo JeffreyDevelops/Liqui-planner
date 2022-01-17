@@ -38,10 +38,25 @@ class Monatslistensammlung {
 
     _html_generieren() {
 
+        let monatslisten = document.createElement("section");
+        monatslisten.setAttribute("id", "monatslisten");
+
+        this._monatslisten.forEach(monatliste => {
+            monatslisten.insertAdjacentElement("beforeend", monatliste.html());
+        });
+
+        return monatslisten;
     }
 
     anzeigen() {
-
+        let eingabeformular_container = document.querySelector("#eingabeformular-container");
+        let monatslistensammlung = document.querySelector("#monatslisten");
+        if (eingabeformular_container !== null) {
+            if (monatslistensammlung !== null) {
+                monatslistensammlung.remove();
+            }
+            eingabeformular_container.insertAdjacentElement("afterend", this._html);
+        }
     }
     
 }

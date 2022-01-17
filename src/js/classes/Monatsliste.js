@@ -16,6 +16,10 @@ class Monatsliste {
         return this._jahr;
     }
 
+    html() {
+        return this._html;
+    }
+
     monat() {
         return this._monat;
     } 
@@ -32,29 +36,6 @@ class Monatsliste {
     // }
 
 
-    _eintraege_anzeigen() {
-        
-        document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => eintragsliste.remove());
-        let eintragsliste = document.createElement("ul");
-        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html()));
-        document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
-    }
-
-
-    /* <article class="monatsliste">
-<h2>
-        <span class="monat-jahr">Februar 2020</span>
-        <span class="monatsbilanz negativ">-326,84€</span>
-</h2> 
-
-    <ul>
-        <li>
-        </li>
-    </ul>
-    
-</article> 
-*/
-
     _html_generieren() {
 
         let monatsliste = document.createElement("article");
@@ -69,6 +50,24 @@ class Monatsliste {
             year: "numeric"
         })}`;
         ueberschrift.insertAdjacentElement("afterbegin", monat_jahr);
+
+        let monatsbilanz = document.createElement("span");
+        if (this._bilanz >= 0) {
+            monatsbilanz.setAttribute("class", "monatsbilanz positiv");
+        } else {
+            monatsbilanz.setAttribute("class", "monatsbilanz negativ");
+        }
+        ueberschrift.insertAdjacentElement("beforeend", monatsbilanz);
+
+        monatsliste.insertAdjacentElement("afterbegin", ueberschrift);
+
+
+        let eintragsliste = document.createElement("ul");
+        this._eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", eintrag.html()));
+        monatsliste.insertAdjacentElement("beforeend", eintragsliste);
+
+        return monatsliste;
+
     }
     
 }
