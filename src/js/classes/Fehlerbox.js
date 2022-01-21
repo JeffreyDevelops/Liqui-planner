@@ -1,14 +1,13 @@
 /**
- * Das Modul "Fehler" stellt die Klasse "Fehler" zur Verfügung.
+ * Das Modul "Fehlerbox" stellt die Klasse "Fehlerbox" zur Verfügung.
  * @module classes/Fehler
- * @todo Modul und Klasse in "Fehlerbox" umbenennen 
  */
 
 /**
- * Die Klasse "Fehler" stellt alle Eigenschaften
+ * Die Klasse "Fehlerbox" stellt alle Eigenschaften
  * und Methoden der Fehlerbox im Eingabeformular (inkl. HTML) zur Verfügung.
  */
-export default class Fehler {
+export default class Fehlerbox {
 
     /**
      * Der Konstruktor generiert bei Instanziierung der Klasse "Fehler"

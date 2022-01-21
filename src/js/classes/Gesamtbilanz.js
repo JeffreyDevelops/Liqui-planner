@@ -100,16 +100,19 @@ export default class Gesamtbilanz {
     }
 
     /**
-     * Diese Methode zeigt die generierte Gesamtbilanz an der richtigen Stelle in der UI an.
+     * Diese private Methode entfernt eine bereits bestehende Gesamtbilanz, wenn vorhanden
      */
-    anzeigen() {
-        /**
-         * @todo hier Methode _entfernen() hinzufügen, statt in anzeigen() bestehende Gesamtbilanz zu entfernen
-         */
+    _entfernen() {
         let gesamtbilanz = document.querySelector("#gesamtbilanz");
         if (gesamtbilanz !== null) {
             gesamtbilanz.remove();
         }
+    }
+    /**
+     * Diese Methode zeigt die generierte Gesamtbilanz an der richtigen Stelle in der UI an.
+     */
+    anzeigen() {
+        this._entfernen();
         document.querySelector("body").insertAdjacentElement("beforeend", this._html);
     }
 

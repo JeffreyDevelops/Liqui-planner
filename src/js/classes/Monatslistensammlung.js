@@ -107,20 +107,23 @@ export default class Monatslistensammlung {
         this._html = this._html_generieren();
         this.anzeigen();
     }
+    /**
+     * Diese private Methode entfernt eine bereits bestehende Monatslistensammlung, wenn vorhanden
+     */
+    _entfernen() {
+        let monatslistensammlung = document.querySelector("#monatslisten");
+        if (monatslistensammlung !== null) {
+            monatslistensammlung.remove();
+        }
+    }
 
     /**
      * Diese Methode zeigt die generierte Monatslistensammlung an der richtigen Stelle in der UI an.
      */
     anzeigen() {
-        /**
-         * @todo hier Methode _entfernen() hinzufügen, statt in anzeigen() bestehende Gesamtbilanz zu entfernen
-         */
         let eingabeformular_container = document.querySelector("#eingabeformular-container");
-        let monatslistensammlung = document.querySelector("#monatslisten");
         if (eingabeformular_container !== null) {
-            if (monatslistensammlung !== null) {
-                monatslistensammlung.remove();
-            }
+           this._entfernen();
             eingabeformular_container.insertAdjacentElement("afterend", this._html);
         }
     }
