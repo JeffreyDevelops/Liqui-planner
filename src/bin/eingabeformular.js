@@ -21,36 +21,31 @@ const eingabeformular = {
     },
 
     formulardaten_validieren(formulardaten) {
-
         let fehler = [];
         if (formulardaten.titel === "") {
             fehler.push("Titel");
         }
-        if(isNaN(formulardaten.betrag)) {
+        if (isNaN(formulardaten.betrag)) {
             fehler.push("Betrag");
         }
-        if(formulardaten.datum === null) {
+        if (formulardaten.datum === null) {
             fehler.push("Datum");
         }
         return fehler;
-
     },
 
     datum_aktualisieren() {
         let datums_input = document.querySelector("#datum");
-        if(datums_input !== null) {
+        if (datums_input !== null) {
             datums_input.valueAsDate = new Date();
         }
-        
     },
 
     absenden_event_hinzufuegen(eingabeformular) {
         eingabeformular.querySelector("#eingabeformular").addEventListener("submit", e => {
             e.preventDefault();
             let formulardaten = this.formulardaten_verarbeiten(this.formulardaten_holen(e));
-            console.log(formulardaten);
             let formular_fehler = this.formulardaten_validieren(formulardaten);
-
             if (formular_fehler.length === 0) {
                 haushaltsbuch.eintrag_hinzufuegen(formulardaten);
                 this.fehlerbox_entfernen();
@@ -59,31 +54,28 @@ const eingabeformular = {
             } else {
                 this.fehlerbox_entfernen();
                 this.fehlerbox_anzeigen(formular_fehler);
-            }
-
+            }   
         });
     },
 
     html_fehlerbox_generieren(formular_fehler) {
 
+        let fehlerbox = document.createElement("div");
+        fehlerbox.setAttribute("class", "fehlerbox");
 
-    let fehlerbox = document.createElement("div");
-    fehlerbox.setAttribute("class", "fehlerbox");
+        let fehlertext = document.createElement("span");
+        fehlertext.textContent = "Folgende Felder wurden nicht korrekt ausgefüllt:";
+        fehlerbox.insertAdjacentElement("afterbegin", fehlertext);
 
-    let fehlertext = document.createElement("span");
-    fehlertext.textContent = "Folgende Felder wurden nicht korrekt ausgefüllt:";
-    fehlerbox.insertAdjacentElement("afterbegin", fehlertext);
+        let fehlerliste = document.createElement("ul");
+        formular_fehler.forEach(fehler => {
+            let fehlerlistenpunkt = document.createElement("li");
+            fehlerlistenpunkt.textContent = fehler;
+            fehlerliste.insertAdjacentElement("beforeend", fehlerlistenpunkt);
+        });
+        fehlerbox.insertAdjacentElement("beforeend", fehlerliste);
 
-    let fehlerliste = document.createElement("ul");
-    formular_fehler.forEach(fehler => {
-        let fehlerlistenpunkt = document.createElement("li");
-        fehlerlistenpunkt.textContent = fehler;
-        fehlerliste.insertAdjacentElement("beforeend", fehlerlistenpunkt);
-     });
-     fehlerbox.insertAdjacentElement("beforeend", fehlerliste);
-
-     return fehlerbox;
-
+        return fehlerbox;
     },
 
     fehlerbox_anzeigen(formular_fehler) {
@@ -91,7 +83,6 @@ const eingabeformular = {
         if (eingabeformular_container !== null) {
             eingabeformular_container.insertAdjacentElement("afterbegin", this.html_fehlerbox_generieren(formular_fehler));
         }
-      
     },
 
     fehlerbox_entfernen() {
@@ -102,7 +93,7 @@ const eingabeformular = {
     },
 
     html_generieren() {
-        
+
         let eingabeformular = document.createElement("section");
         eingabeformular.setAttribute("id", "eingabeformular-container");
         eingabeformular.innerHTML = `<form id="eingabeformular" action="#" method="get"></form>
@@ -141,8 +132,7 @@ const eingabeformular = {
         if (navigationsleiste !== null) {
             navigationsleiste.insertAdjacentElement("afterend", this.html_generieren());
             this.datum_aktualisieren();
-        }
-        
+        }      
     }
 
 };

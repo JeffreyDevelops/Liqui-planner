@@ -1,6 +1,7 @@
 "use strict";
 
 const haushaltsbuch = {
+
     gesamtbilanz: new Map(),
     eintraege: [],
 
@@ -19,7 +20,6 @@ const haushaltsbuch = {
     },
 
     eintrag_entfernen(timestamp) {
-
         let start_index;
         for (let i = 0; i < this.eintraege.length; i++) {
             if (this.eintraege[i].get("timestamp") === parseInt(timestamp)) {
@@ -28,12 +28,10 @@ const haushaltsbuch = {
                 break;
             }
         }
-
         this.eintraege.splice(start_index, 1);
         this.eintraege_anzeigen();
         this.gesamtbilanz_erstellen();
         this.gesamtbilanz_anzeigen();
-
     },
 
     eintraege_sortieren() {
@@ -85,12 +83,10 @@ const haushaltsbuch = {
             let timestamp = e.target.parentElement.getAttribute("data-timestamp");
             this.eintrag_entfernen(timestamp);
         });
-        
     },
 
     eintraege_anzeigen() {
-        
-        document.querySelectorAll(".monatsliste ul").forEach((eintragsliste) => eintragsliste.remove());
+        document.querySelectorAll(".monatsliste ul").forEach(eintragsliste => eintragsliste.remove());
         let eintragsliste = document.createElement("ul");
         this.eintraege.forEach(eintrag => eintragsliste.insertAdjacentElement("beforeend", this.html_eintrag_generieren(eintrag)));
         document.querySelector(".monatsliste").insertAdjacentElement("afterbegin", eintragsliste);
@@ -99,10 +95,10 @@ const haushaltsbuch = {
     gesamtbilanz_erstellen() {
         let neue_gesamtbilanz = new Map();
         neue_gesamtbilanz.set("einnahmen", 0);
-        neue_gesamtbilanz.set("ausgaben", 0);     
+        neue_gesamtbilanz.set("ausgaben", 0);
         neue_gesamtbilanz.set("bilanz", 0);
         this.eintraege.forEach(eintrag => {
-            switch(eintrag.get("typ")) {
+            switch (eintrag.get("typ")) {
                 case "einnahme":
                     neue_gesamtbilanz.set("einnahmen", neue_gesamtbilanz.get("einnahmen") + eintrag.get("betrag"));
                     neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") + eintrag.get("betrag"));
@@ -111,20 +107,19 @@ const haushaltsbuch = {
                     neue_gesamtbilanz.set("ausgaben", neue_gesamtbilanz.get("ausgaben") + eintrag.get("betrag"));
                     neue_gesamtbilanz.set("bilanz", neue_gesamtbilanz.get("bilanz") - eintrag.get("betrag"));
                     break;
-                default: 
-                console.log(`Der Typ "${eintrag.get("typ")}" ist nicht bekannt!`);
+                default:
+                    console.log(`Der Typ "${eintrag.get("typ")}" ist nicht bekannt.`);
                     break;
             }
         });
         this.gesamtbilanz = neue_gesamtbilanz;
-        
     },
 
     html_gesamtbilanz_generieren() {
 
         let gesamtbilanz = document.createElement("aside");
         gesamtbilanz.setAttribute("id", "gesamtbilanz");
-        
+
         let ueberschrift = document.createElement("h1");
         ueberschrift.textContent = "Gesamtbilanz";
         gesamtbilanz.insertAdjacentElement("afterbegin", ueberschrift);
@@ -161,17 +156,11 @@ const haushaltsbuch = {
         gesamtbilanz.insertAdjacentElement("beforeend", bilanz_zeile);
 
         return gesamtbilanz;
-
-
-        },
-
-    gesamtbilanz_anzeigen() {
-
-        document.querySelectorAll("#gesamtbilanz").forEach(gesamtbilanz => gesamtbilanz.remove());
-        document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
-
     },
 
-   
-    
+    gesamtbilanz_anzeigen() {
+        document.querySelectorAll("#gesamtbilanz").forEach(gesamtbilanz => gesamtbilanz.remove());
+        document.querySelector("body").insertAdjacentElement("beforeend", this.html_gesamtbilanz_generieren());
+    }
+
 };
