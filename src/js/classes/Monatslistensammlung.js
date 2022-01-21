@@ -1,6 +1,6 @@
-"use strict";
+import Monatsliste from "./Monatsliste.js";
 
-class Monatslistensammlung {
+export default class Monatslistensammlung {
 
     constructor() {
         this._monatslisten = [];
